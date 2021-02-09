@@ -9,6 +9,9 @@ NOTE: If you strongly prefer to work locally on your own computer, you can total
 import random
 
 
+high_score = 0
+
+
 def start_game():
     count = 0
 
@@ -23,7 +26,7 @@ def start_game():
         print("Press [q/Q] to quit to quit the game.")
 
     def random_number():
-        number = random.randint(1, 20)
+        number = random.randint(1, 10)
         return number
 
     def play_again():
@@ -44,9 +47,12 @@ def start_game():
                     exit()
 
     def guess(count, number):
+        global high_score
+        if high_score != 0:
+            print("Your previous high score is {}, try to beat it!".format(high_score))
         while True:
             try:
-                the_guess = input('Guess a number between 1 and 20: ')
+                the_guess = input('Guess a number between 1 and 10: ')
                 if the_guess == "q" or the_guess == "Q":
                     print("Thank you for playing!")
                     print("Goodbye!")
@@ -54,7 +60,7 @@ def start_game():
                 if not the_guess.isdigit():
                     raise ValueError("The guess needs to be a digit, please try again.")
                 the_guess = int(the_guess)
-                if the_guess > 20 or the_guess < 1:
+                if the_guess > 10 or the_guess < 1:
                     raise ValueError("The guess is out of the specified range for the game.  Please try again.")
             except ValueError as error:
                 print("There has been an error.  Your error is: {}".format(error))
@@ -62,6 +68,9 @@ def start_game():
                 count += 1
                 if the_guess == number:
                     print("You guessed the right number!  It took you {} attempts to guess.".format(count))
+                    if high_score == 0 or count < high_score:
+                        high_score = count
+                        print("{} is your new high score!".format(high_score))
                     play_again()
                 if the_guess > number:
                     print("The number is lower than that, please try again.")
